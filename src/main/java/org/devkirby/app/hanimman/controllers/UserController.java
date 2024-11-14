@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/users/token")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    @PutMapping
+    @PutMapping("/token")
     public ResponseEntity<String> updateToken(@RequestBody TokenUpdateRequest request) {
         boolean updated = userService.updateTokenByAndroidId(request.getAndroidId(), request.getNewToken());
         if (updated) {
