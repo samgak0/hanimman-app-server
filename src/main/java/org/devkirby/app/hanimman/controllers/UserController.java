@@ -33,9 +33,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable String username) {
-        Optional<UserDTO> userDTO = userService.getUserByUsername(username);
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
+        Optional<UserDTO> userDTO = userService.getUserById(userId);
         return userDTO.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }

@@ -52,10 +52,4 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
-
-    @Override
-    public Optional<UserDTO> getUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        return user.map(value -> modelMapper.map(value, UserDTO.class));
-    }
 }

@@ -10,8 +10,6 @@ public interface UserService {
 
     Optional<UserDTO> getUserById(Long id);
 
-    Optional<UserDTO> getUserByUsername(String username);
-
     boolean updateTokenByAndroidId(String androidId, String newToken);
 
     UserDTO save(String username, String androidId, String token);
