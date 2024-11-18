@@ -1,6 +1,7 @@
 package org.devkirby.app.hanimman.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.devkirby.app.hanimman.dto.MessageDTO;
@@ -8,6 +9,7 @@ import org.devkirby.app.hanimman.services.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,11 +46,22 @@ public class MessageController {
         return ResponseEntity.ok(messages);
     }
 
+    @PatchMapping("/mark-read")
+    public ResponseEntity<?> markMessagesAsRead(@RequestBody MarkReadRequest request) {
+        int affectedRow = messageService.markMessagesAsRead(request.getMessageIds());
+        return ResponseEntity.ok().body(Map.of("count", affectedRow));
+    }
+
     @Data
     public static class MessageCreateRequest {
         private String content;
         private Long sender;
         private Long receiver;
+    }
+
+    @Data
+    public static class MarkReadRequest {
+        private List<Long> messageIds;
     }
 
 }

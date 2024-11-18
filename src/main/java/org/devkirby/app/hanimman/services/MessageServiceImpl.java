@@ -24,13 +24,12 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageDTO createMessage(String content, Long senderId, Long receiverId) {
-        // ID로 User 객체 조회
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID: " + senderId));
         User receiver = userRepository.findById(receiverId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid receiver ID: " + receiverId));
 
-        Message message = new Message(null, content, sender, receiver, LocalDateTime.now());
+        Message message = new Message(null, content, sender, receiver, false, LocalDateTime.now());
         Message savedMessage = messageRepository.save(message);
 
         return modelMapper.map(savedMessage, MessageDTO.class);
@@ -42,5 +41,10 @@ public class MessageServiceImpl implements MessageService {
         return messages.stream()
                 .map(message -> modelMapper.map(message, MessageDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int markMessagesAsRead(List<Long> messageIds) {
+        return messageRepository.markMessagesAsRead(messageIds);
     }
 }
