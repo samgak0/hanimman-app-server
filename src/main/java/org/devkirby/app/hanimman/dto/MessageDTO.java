@@ -15,4 +15,5 @@ public class MessageDTO {
     private LocalDateTime createdAt;
     private UserDTO sender;
     private UserDTO receiver;
+    private Boolean isRead;
 }
