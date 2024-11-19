@@ -11,6 +11,7 @@ import org.devkirby.app.hanimman.repositories.MessageRepository;
 import org.devkirby.app.hanimman.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public int markMessagesAsRead(List<Long> messageIds) {
         return messageRepository.markMessagesAsRead(messageIds);
