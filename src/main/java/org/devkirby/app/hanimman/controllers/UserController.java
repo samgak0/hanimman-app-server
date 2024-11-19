@@ -27,14 +27,12 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateRequest request) {
-
         UserDTO savedUser = userService.save(request.username, request.androidId, request.token);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") Long userId) {
         Optional<UserDTO> userDTO = userService.getUserById(userId);
         return userDTO.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
