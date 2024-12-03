@@ -10,14 +10,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findByIdInAndIsReadFalse(List<Long> ids);
+public interface MessageRepository extends JpaRepository<Message, Integer> {
+    List<Message> findByIdInAndIsReadFalse(List<Integer> ids);
 
     @Query("SELECT m FROM Message m WHERE (m.sender.id = :senderId AND m.receiver.id = :receiverId) OR (m.sender.id = :receiverId AND m.receiver.id = :senderId) ORDER BY m.createdAt")
-    List<Message> findMessagesBetweenUsers(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+    List<Message> findMessagesBetweenUsers(@Param("senderId") Integer senderId,
+            @Param("receiverId") Integer receiverId);
 
     @Modifying
     @Query("UPDATE Message m SET m.isRead = true WHERE m.id IN :ids")
-    int markMessagesAsRead(@Param("ids") List<Long> ids);
+    int markMessagesAsRead(@Param("ids") List<Integer> ids);
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDTO {
-    private Long id;
+    private Integer id;
     private String content;
     private LocalDateTime createdAt;
     private UserDTO sender;

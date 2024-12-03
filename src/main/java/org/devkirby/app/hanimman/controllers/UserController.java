@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") Integer userId) {
         Optional<UserDTO> userDTO = userService.getUserById(userId);
         return userDTO.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());

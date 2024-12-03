@@ -40,8 +40,8 @@ public class MessageController {
 
     @GetMapping
     public ResponseEntity<List<MessageDTO>> getMessagesBetweenUsers(
-            @RequestParam Long senderId,
-            @RequestParam Long receiverId) {
+            @RequestParam Integer senderId,
+            @RequestParam Integer receiverId) {
         List<MessageDTO> messages = messageService.getMessagesBetweenUsers(senderId, receiverId);
         return ResponseEntity.ok(messages);
     }
@@ -55,13 +55,13 @@ public class MessageController {
     @Data
     public static class MessageCreateRequest {
         private String content;
-        private Long sender;
-        private Long receiver;
+        private Integer sender;
+        private Integer receiver;
     }
 
     @Data
     public static class MarkReadRequest {
-        private List<Long> messageIds;
+        private List<Integer> messageIds;
     }
 
 }

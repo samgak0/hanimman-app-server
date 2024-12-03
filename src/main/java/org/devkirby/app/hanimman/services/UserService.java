@@ -8,7 +8,7 @@ import org.devkirby.app.hanimman.dto.UserDTO;
 public interface UserService {
     List<UserDTO> getAllUsers();
 
-    Optional<UserDTO> getUserById(Long id);
+    Optional<UserDTO> getUserById(Integer id);
 
     boolean updateTokenByAndroidId(String androidId, String newToken);
 

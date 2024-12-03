@@ -24,20 +24,20 @@ public class MessageServiceImpl implements MessageService {
     private final ModelMapper modelMapper;
 
     @Override
-    public MessageDTO createMessage(String content, Long senderId, Long receiverId) {
+    public MessageDTO createMessage(String content, Integer senderId, Integer receiverId) {
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID: " + senderId));
         User receiver = userRepository.findById(receiverId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid receiver ID: " + receiverId));
 
-        Message message = new Message(null, content, sender, receiver, false, LocalDateTime.now());
+        Message message = new Message(null, content, sender, receiver, false, null, LocalDateTime.now());
         Message savedMessage = messageRepository.save(message);
 
         return modelMapper.map(savedMessage, MessageDTO.class);
     }
 
     @Override
-    public List<MessageDTO> getMessagesBetweenUsers(Long senderId, Long receiverId) {
+    public List<MessageDTO> getMessagesBetweenUsers(Integer senderId, Integer receiverId) {
         List<Message> messages = messageRepository.findMessagesBetweenUsers(senderId, receiverId);
         return messages.stream()
                 .map(message -> modelMapper.map(message, MessageDTO.class))
@@ -46,7 +46,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Transactional
     @Override
-    public int markMessagesAsRead(List<Long> messageIds) {
+    public int markMessagesAsRead(List<Integer> messageIds) {
         return messageRepository.markMessagesAsRead(messageIds);
     }
 }

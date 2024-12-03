@@ -5,9 +5,9 @@ import java.util.List;
 import org.devkirby.app.hanimman.dto.MessageDTO;
 
 public interface MessageService {
-    MessageDTO createMessage(String content, Long senderId, Long receiverId);
+    MessageDTO createMessage(String content, Integer senderId, Integer receiverId);
 
-    int markMessagesAsRead(List<Long> messageIds);
+    int markMessagesAsRead(List<Integer> messageIds);
 
-    List<MessageDTO> getMessagesBetweenUsers(Long senderId, Long receiverId);
+    List<MessageDTO> getMessagesBetweenUsers(Integer senderId, Integer receiverId);
 }

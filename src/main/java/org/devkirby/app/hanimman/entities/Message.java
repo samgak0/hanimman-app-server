@@ -29,7 +29,7 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -46,6 +46,9 @@ public class Message {
 
     @Column(nullable = false)
     private Boolean isRead = false;
+
+    @Column(nullable = true)
+    private String pushToken = null;
 
     @Column(nullable = false, columnDefinition = "DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)")
     private LocalDateTime createdAt;
