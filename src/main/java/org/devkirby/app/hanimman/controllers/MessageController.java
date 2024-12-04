@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.devkirby.app.hanimman.dto.MessageDTO;
 import org.devkirby.app.hanimman.services.MessageService;
+import org.devkirby.app.hanimman.services.MessageServiceImpl.MessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -27,15 +31,28 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageCreateRequest request) {
+    public ResponseEntity<ResponseCreateMessage> createMessage(@RequestBody MessageCreateRequest request)
+            throws FirebaseMessagingException {
         if (Objects.equals(request.sender, request.receiver)) {
             throw new IllegalArgumentException("Sender and receiver cannot be the same user.");
         }
-        MessageDTO savedMessage = messageService.createMessage(
+
+        MessageResponse savedData = messageService.createMessage(
                 request.getContent(),
                 request.getSender(),
                 request.getReceiver());
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedMessage);
+
+        ResponseCreateMessage responseCreateMessage = new ResponseCreateMessage(savedData.getData(),
+                savedData.isPushSuccess());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseCreateMessage);
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class ResponseCreateMessage {
+        private MessageDTO message;
+        private boolean pushSuccess;
     }
 
     @GetMapping

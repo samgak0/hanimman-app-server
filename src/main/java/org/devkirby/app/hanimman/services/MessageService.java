@@ -3,9 +3,13 @@ package org.devkirby.app.hanimman.services;
 import java.util.List;
 
 import org.devkirby.app.hanimman.dto.MessageDTO;
+import org.devkirby.app.hanimman.services.MessageServiceImpl.MessageResponse;
+
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 public interface MessageService {
-    MessageDTO createMessage(String content, Integer senderId, Integer receiverId);
+    MessageResponse createMessage(String content, Integer senderId, Integer receiverId)
+            throws FirebaseMessagingException;
 
     int markMessagesAsRead(List<Integer> messageIds);
 
