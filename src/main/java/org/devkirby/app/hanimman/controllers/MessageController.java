@@ -64,7 +64,8 @@ public class MessageController {
     }
 
     @PatchMapping("/mark-read")
-    public ResponseEntity<?> markMessagesAsRead(@RequestBody MarkReadRequest request) {
+    public ResponseEntity<?> markMessagesAsRead(@RequestBody MarkReadRequest request)
+            throws FirebaseMessagingException {
         int affectedRow = messageService.markMessagesAsRead(request.getMessageIds());
         return ResponseEntity.ok().body(Map.of("count", affectedRow));
     }

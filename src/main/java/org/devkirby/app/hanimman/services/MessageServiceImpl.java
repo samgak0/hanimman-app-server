@@ -56,6 +56,7 @@ public class MessageServiceImpl implements MessageService {
 
         if (registrationToken != null && registrationToken.length() > 10) {
             com.google.firebase.messaging.Message firebaseMessage = com.google.firebase.messaging.Message.builder()
+                    .putData("type", "createMessage")
                     .putData("id", savedMessage.getId().toString())
                     .putData("content", content)
                     .putData("senderId", senderId.toString())
@@ -86,7 +87,37 @@ public class MessageServiceImpl implements MessageService {
 
     @Transactional
     @Override
-    public int markMessagesAsRead(List<Integer> messageIds) {
+    public int markMessagesAsRead(List<Integer> messageIds) throws FirebaseMessagingException {
+
+        for (int i = 0; i < messageIds.size(); i++) {
+            System.out.println(messageIds.get(i));
+        }
+
+        if (messageIds.size() <= 0)
+            return -1;
+        Message message = messageRepository.findById(messageIds.get(0)).orElseThrow();
+
+        String result = messageIds.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+
+        String registrationToken = message.getSender().getToken();
+
+        if (registrationToken != null && registrationToken.length() > 10) {
+
+            com.google.firebase.messaging.Message firebaseMessage = com.google.firebase.messaging.Message.builder()
+                    .putData("type", "markMessagesAsRead")
+                    .putData("ids", result)
+                    .putData("senderId", message.getSender().getId().toString())
+                    .putData("senderName", message.getSender().getUsername())
+                    .putData("receiverId", message.getReceiver().getId().toString())
+                    .putData("receiverName", message.getReceiver().getUsername())
+                    .setToken(message.getSender().getToken())
+                    .build();
+
+            FirebaseMessaging.getInstance().send(firebaseMessage);
+        }
+
         return messageRepository.markMessagesAsRead(messageIds);
     }
 }

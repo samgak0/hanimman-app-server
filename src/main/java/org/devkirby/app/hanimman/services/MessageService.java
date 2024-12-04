@@ -11,7 +11,7 @@ public interface MessageService {
     MessageResponse createMessage(String content, Integer senderId, Integer receiverId)
             throws FirebaseMessagingException;
 
-    int markMessagesAsRead(List<Integer> messageIds);
+    public int markMessagesAsRead(List<Integer> messageIds) throws FirebaseMessagingException;
 
     List<MessageDTO> getMessagesBetweenUsers(Integer senderId, Integer receiverId);
 }
