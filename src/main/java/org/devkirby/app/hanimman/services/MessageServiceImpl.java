@@ -88,11 +88,6 @@ public class MessageServiceImpl implements MessageService {
     @Transactional
     @Override
     public int markMessagesAsRead(List<Integer> messageIds) throws FirebaseMessagingException {
-
-        for (int i = 0; i < messageIds.size(); i++) {
-            System.out.println(messageIds.get(i));
-        }
-
         if (messageIds.size() <= 0)
             return -1;
         Message message = messageRepository.findById(messageIds.get(0)).orElseThrow();
@@ -115,7 +110,8 @@ public class MessageServiceImpl implements MessageService {
                     .setToken(message.getSender().getToken())
                     .build();
 
-            FirebaseMessaging.getInstance().send(firebaseMessage);
+            String messagingResult = FirebaseMessaging.getInstance().send(firebaseMessage);
+            log.info("MessageService markMessagesAsRead messagingResult = {}", messagingResult);
         }
 
         return messageRepository.markMessagesAsRead(messageIds);
